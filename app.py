@@ -14,6 +14,7 @@ import json
 import re
 from google import genai
 from google.genai import types
+import re
 
 # ==============================
 # FASTAPI APP
@@ -129,9 +130,9 @@ TRACEBACK:
         print("AI Error:", e)
 
     # Fallback: extract line number directly from traceback
-    match = re.search(r'line (\d+)', tb)
-    if match:
-        return [int(match.group(1))]
+    matches = re.findall(r'File "<string>", line (\d+)', tb)
+    if matches:
+        return [int(matches[-1])]
 
     return []
 
